@@ -17,22 +17,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import batista.mateus.com.br.dagger2andrxjava.R;
+import batista.mateus.com.br.dagger2andrxjava.network.GlideImagem;
 import batista.mateus.com.br.dagger2andrxjava.network.model.Contact;
 
 public class ContactsAdapterFilterable extends RecyclerView.Adapter<ContactsAdapterFilterable.MyViewHolder>
         implements Filterable {
 
-    private Context context;
     private List<Contact> contactList;
     private List<Contact> contactListFiltered;
     private ContactsAdapterListener listener;
+    private GlideImagem glide;
 
 
-    public ContactsAdapterFilterable(Context context, List<Contact> contactList, ContactsAdapterListener listener) {
-        this.context = context;
+    public ContactsAdapterFilterable(List<Contact> contactList, ContactsAdapterListener listener, GlideImagem glide) {
         this.listener = listener;
         this.contactList = contactList;
         this.contactListFiltered = contactList;
+        this.glide = glide;
     }
 
     @Override
@@ -49,10 +50,7 @@ public class ContactsAdapterFilterable extends RecyclerView.Adapter<ContactsAdap
         holder.name.setText(contact.getName());
         holder.phone.setText(contact.getPhone());
 
-        Glide.with(context)
-                .load(contact.getProfileImage())
-                .apply(RequestOptions.circleCropTransform())
-                .into(holder.thumbnail);
+        glide.downloadImg(contact.getProfileImage(),holder.thumbnail);
     }
 
     @Override

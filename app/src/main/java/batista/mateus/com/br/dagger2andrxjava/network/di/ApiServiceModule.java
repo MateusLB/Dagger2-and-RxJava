@@ -5,8 +5,9 @@ package batista.mateus.com.br.dagger2andrxjava.network.di;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Singleton;
+
 import batista.mateus.com.br.dagger2andrxjava.network.ApiService;
-import batista.mateus.com.br.dagger2andrxjava.network.di.annotation.ScopeNetwork;
 import batista.mateus.com.br.dagger2andrxjava.utils.Const;
 import dagger.Module;
 import dagger.Provides;
@@ -16,18 +17,18 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
-public class ApiClientModule {
+public class ApiServiceModule {
     private static int REQUEST_TIMEOUT = 60;
 
-    @ScopeNetwork
+    @Singleton
     @Provides
-    ApiService apiService(Retrofit retrofit){
+    ApiService provideApiService(Retrofit retrofit){
         return retrofit.create(ApiService.class);
     }
 
-    @ScopeNetwork
+    @Singleton
     @Provides
-    Retrofit retrofit(OkHttpClient okHttpClient, RxJava2CallAdapterFactory adapterFactory, GsonConverterFactory converterFactory){
+    Retrofit provideRetrofit(OkHttpClient okHttpClient, RxJava2CallAdapterFactory adapterFactory, GsonConverterFactory converterFactory){
         return new Retrofit.Builder()
                 .baseUrl(Const.BASE_URL)
                 .client(okHttpClient)
@@ -36,21 +37,21 @@ public class ApiClientModule {
                 .build();
     }
 
-    @ScopeNetwork
+    @Singleton
     @Provides
-    RxJava2CallAdapterFactory rxJava2CallAdapterFactory(){
+    RxJava2CallAdapterFactory provideRxJava2CallAdapterFactory(){
         return RxJava2CallAdapterFactory.create();
     }
 
-    @ScopeNetwork
+    @Singleton
     @Provides
-    GsonConverterFactory gsonConverterFactory(){
+    GsonConverterFactory provideGsonConverterFactory(){
         return GsonConverterFactory.create();
     }
 
-    @ScopeNetwork
+    @Singleton
     @Provides
-    OkHttpClient okHttpClient(HttpLoggingInterceptor interceptor){
+    OkHttpClient provideOkHttpClient(HttpLoggingInterceptor interceptor){
         OkHttpClient.Builder httpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(REQUEST_TIMEOUT, TimeUnit.SECONDS)
@@ -60,9 +61,9 @@ public class ApiClientModule {
         return httpClient.build();
     }
 
-    @ScopeNetwork
+    @Singleton
     @Provides
-    HttpLoggingInterceptor httpLoggingInterceptor(){
+    HttpLoggingInterceptor provideHttpLoggingInterceptor(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         return interceptor;
