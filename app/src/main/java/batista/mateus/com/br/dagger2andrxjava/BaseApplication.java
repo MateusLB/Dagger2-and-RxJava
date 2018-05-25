@@ -1,7 +1,6 @@
 package batista.mateus.com.br.dagger2andrxjava;
 
 import android.app.Application;
-import android.content.Context;
 
 import batista.mateus.com.br.dagger2andrxjava.view.LocalSearchActivity;
 import batista.mateus.com.br.dagger2andrxjava.view.di.LocalSearchComponent;
@@ -19,7 +18,7 @@ public class BaseApplication extends Application {
     }
 
     private void initDagger() {
-        applicationComponent = DaggerApplicationComponent
+       applicationComponent = DaggerApplicationComponent
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
